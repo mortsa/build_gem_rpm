@@ -1,64 +1,93 @@
-%{!?ruby_sitelib: %global ruby_sitelib %(ruby -rrbconfig -e "puts RbConfig::CONFIG['sitelibdir']")}
-%{!?ruby_sitearch: %global ruby_sitearch %(ruby -rrbconfig -e "puts RbConfig::CONFIG['sitearchdir']")}
+# Generated from r10k-1.2.0.gem by gem2rpm -*- rpm-spec -*-
+%global gem_name r10k
 
-%define gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
-%define geminstdir %{gemdir}/gems/%{gemname}-%{version}
-%define gemname r10k
-
-
-Name:           rubygem-%{gemname}
-Version:        1.2.0
-Release:        1%{?dist}
-Summary:        Puppet environment and module deployment
-
-Group:          Development/Languages
-
-License:        ASL 2.0
-URL:            https://github.com/adrienthebo/r10k
-Source0:        http://rubygems.org/downloads/%{gemname}-%{version}.gem
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch:      noarch
-BuildRequires:  ruby ruby-devel
-BuildRequires:  rubygems
-Requires:       rubygems
-Requires:       ruby(abi) = 1.8
-Provides:       rubygem(%{gemname}) = %{version}
+Name: rubygem-%{gem_name}
+Version: 1.2.0
+Release: 1%{?dist}
+Summary: Puppet environment and module deployment
+Group: Development/Languages
+License: Apache 2.0
+URL: http://github.com/adrienthebo/r10k
+Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
+Requires: ruby(release)
+Requires: ruby(rubygems) 
+Requires: rubygem(colored) >= 1.2
+Requires: rubygem(cri) => 2.4.0
+Requires: rubygem(cri) < 2.5
+Requires: rubygem(systemu) => 2.5.2
+Requires: rubygem(systemu) < 2.6
+Requires: rubygem(log4r) >= 1.1.10
+Requires: rubygem(multi_json) => 1.8.2
+Requires: rubygem(multi_json) < 1.9
+Requires: rubygem(json_pure) => 1.8.1
+Requires: rubygem(json_pure) < 1.9
+Requires: rubygem(faraday) => 0.8.8
+Requires: rubygem(faraday) < 0.9
+Requires: rubygem(faraday_middleware) => 0.9.0
+Requires: rubygem(faraday_middleware) < 0.10
+Requires: rubygem(faraday_middleware-multi_json) => 0.0.5
+Requires: rubygem(faraday_middleware-multi_json) < 0.1
+BuildRequires: ruby(release)
+BuildRequires: rubygems-devel 
+BuildRequires: ruby 
+BuildArch: noarch
+Provides: rubygem(%{gem_name}) = %{version}
 
 %description
-r10k provides a general purpose toolset for deploying Puppet 
-environments and modules. It implements the Puppetfile format 
-and provides a native implementation of Puppet dynamic environments.
+R10K provides a general purpose toolset for deploying Puppet environments
+and modules.
+It implements the Puppetfile format and provides a native implementation of
+Puppet
+dynamic environments.
 
+
+%package doc
+Summary: Documentation for %{name}
+Group: Documentation
+Requires: %{name} = %{version}-%{release}
+BuildArch: noarch
+
+%description doc
+Documentation for %{name}
 
 %prep
+gem unpack %{SOURCE0}
 
-%setup -q -c -T
+%setup -q -D -T -n  %{gem_name}-%{version}
+
+gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 
 %build
+# Create the gem as gem install only works on a gem file
+gem build %{gem_name}.gemspec
 
+# %%gem_install compiles any C extensions and installs the gem into ./%gem_dir
+# by default, so that we can move it into the buildroot in %%install
+%gem_install
 
 %install
-rm -rf %{buildroot}
-mkdir -p %{buildroot}%{gemdir}
-gem install --local --install-dir %{buildroot}%{gemdir} \
-            --force --rdoc %{SOURCE0}
+mkdir -p %{buildroot}%{gem_dir}
+cp -pa .%{gem_dir}/* \
+        %{buildroot}%{gem_dir}/
 
 
+mkdir -p %{buildroot}%{_bindir}
+cp -pa .%{_bindir}/* \
+        %{buildroot}%{_bindir}/
 
-%check
-
-
-%clean
-rm -rf  %{buildroot}
-
+find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
 
 %files
-%defattr(-,root,root,-)
-%doc
-# For noarch packages: ruby_sitelib
-%{ruby_sitelib}/*
-# For arch-specific packages: ruby_sitearch
-%{ruby_sitearch}/*
+%dir %{gem_instdir}
+%{_bindir}/r10k
+%{gem_instdir}/bin
+%{gem_libdir}
+%exclude %{gem_cache}
+%{gem_spec}
 
+%files doc
+%doc %{gem_docdir}
 
 %changelog
+* Fri Apr 18 2014 Tim Hughes - 1.2.0-1
+- Initial package

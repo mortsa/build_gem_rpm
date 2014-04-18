@@ -1,46 +1,55 @@
-%{!?ruby_sitelib: %global ruby_sitelib %(ruby -rrbconfig -e "puts Config::CONFIG['sitelibdir']")}
-%{!?ruby_sitearch: %global ruby_sitearch %(ruby -rrbconfig -e "puts Config::CONFIG['sitearchdir']")}
+%{!?ruby_sitelib: %global ruby_sitelib %(ruby -rrbconfig -e "puts RbConfig::CONFIG['sitelibdir']")}
+%{!?ruby_sitearch: %global ruby_sitearch %(ruby -rrbconfig -e "puts RbConfig::CONFIG['sitearchdir']")}
 
-Name:           rubygem-r10k
-Version:
+%define gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
+%define geminstdir %{gemdir}/gems/%{gemname}-%{version}
+%define gemname r10k
+
+
+Name:           rubygem-%{gemname}
+Version:        1.2.0
 Release:        1%{?dist}
-Summary:
+Summary:        Puppet environment and module deployment
 
 Group:          Development/Languages
 
-License:
-URL:
-Source0:
-
-BuildArch:
+License:        ASL 2.0
+URL:            https://github.com/adrienthebo/r10k
+Source0:        http://rubygems.org/downloads/%{gemname}-%{version}.gem
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
 BuildRequires:  ruby ruby-devel
+BuildRequires:  rubygems
+Requires:       rubygems
 Requires:       ruby(abi) = 1.8
-# If this package is mainly a ruby library, it should provide
-# whatever people have to require in their ruby scripts to use the library
-# For example, if people use this lib with "require 'foo'", it should provide
-# ruby(foo)
-Provides:       ruby(LIBNAME)
+Provides:       rubygem(%{gemname}) = %{version}
 
 %description
+r10k provides a general purpose toolset for deploying Puppet 
+environments and modules. It implements the Puppetfile format 
+and provides a native implementation of Puppet dynamic environments.
 
 
 %prep
-%setup -q
 
+%setup -q -c -T
 
 %build
-export CFLAGS="$RPM_OPT_FLAGS"
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{gemdir}
+gem install --local --install-dir %{buildroot}%{gemdir} \
+            --force --rdoc %{SOURCE0}
+
 
 
 %check
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf  %{buildroot}
 
 
 %files

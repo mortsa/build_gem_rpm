@@ -94,6 +94,8 @@ rm -rf %{buildroot}
 %files doc
 %defattr(-,root,root,-)
 %doc %{gem_docdir}
+%{gem_instdir}/spec
+%{gem_spec}
 
 %changelog
 * Fri Apr 18 2014 Tim Hughes - 1.2.0-1

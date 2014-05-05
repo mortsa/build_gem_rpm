@@ -9,7 +9,8 @@ Group: Development/Languages
 License: Apache 2.0
 URL: http://github.com/adrienthebo/r10k
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
-Requires: ruby(release)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Requires: ruby(abi)
 Requires: ruby(rubygems) 
 Requires: rubygem(colored) >= 1.2
 Requires: rubygem(cri) => 2.4.0
@@ -27,7 +28,7 @@ Requires: rubygem(faraday_middleware) => 0.9.0
 Requires: rubygem(faraday_middleware) < 0.10
 Requires: rubygem(faraday_middleware-multi_json) => 0.0.5
 Requires: rubygem(faraday_middleware-multi_json) < 0.1
-BuildRequires: ruby(release)
+BuildRequires: ruby(abi)
 BuildRequires: rubygems-devel 
 BuildRequires: ruby 
 BuildArch: noarch
@@ -66,6 +67,7 @@ gem build %{gem_name}.gemspec
 %gem_install
 
 %install
+rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gem_dir}
 cp -pa .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
@@ -77,7 +79,11 @@ cp -pa .%{_bindir}/* \
 
 find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
 
+%clean
+rm -rf %{buildroot}
+
 %files
+%defattr(-,root,root,-)
 %dir %{gem_instdir}
 %{_bindir}/r10k
 %{gem_instdir}/bin
@@ -86,6 +92,7 @@ find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
 %{gem_spec}
 
 %files doc
+%defattr(-,root,root,-)
 %doc %{gem_docdir}
 
 %changelog

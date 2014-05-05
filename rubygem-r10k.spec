@@ -1,20 +1,19 @@
-# Generated from r10k-1.2.0.gem by gem2rpm -*- rpm-spec -*-
+# Generated from r10k-1.2.1.gem by gem2rpm -*- rpm-spec -*-
 %global gem_name r10k
 
 Name: rubygem-%{gem_name}
-Version: 1.2.0
+Version: 1.2.1
 Release: 1%{?dist}
 Summary: Puppet environment and module deployment
 Group: Development/Languages
 License: Apache 2.0
 URL: http://github.com/adrienthebo/r10k
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: ruby(abi)
 Requires: ruby(rubygems) 
 Requires: rubygem(colored) >= 1.2
-Requires: rubygem(cri) => 2.4.0
-Requires: rubygem(cri) < 2.5
+Requires: rubygem(cri) => 2.5.0
+Requires: rubygem(cri) < 2.6
 Requires: rubygem(systemu) => 2.5.2
 Requires: rubygem(systemu) < 2.6
 Requires: rubygem(log4r) >= 1.1.10
@@ -98,5 +97,5 @@ rm -rf %{buildroot}
 %{gem_spec}
 
 %changelog
-* Fri Apr 18 2014 Tim Hughes - 1.2.0-1
+* Mon May 05 2014 Tim Hughes - 1.2.1-1
 - Initial package

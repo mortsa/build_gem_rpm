@@ -117,6 +117,19 @@ rm -rf %{buildroot}
 %doc %{gem_instdir}/<%= f %>
 <% end -%>
 %{gem_instdir}/spec
+%{gem_instdir}/doc
+%{gem_instdir}/CHANGELOG
+%{gem_instdir}/Gemfile
+%{gem_instdir}/LICENSE
+%{gem_instdir}/README.markdown
+%{gem_instdir}/Rakefile
+%{gem_instdir}/r10k.yaml.example
+%{gem_instdir}/r10k.gemspec
+%exclude %{gem_instdir}/.gitignore
+%exclude %{gem_instdir}/.nodeset.yml
+%exclude %{gem_instdir}/.rspec
+%exclude %{gem_instdir}/.travis.yml
+
 %{gem_spec}
 <% end # if doc_subpackage -%>
 

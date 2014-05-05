@@ -31,21 +31,21 @@ then
 fi
 if [ -f rubygem-${GEM}.spec.template ] 
 then
-    gem2rpm -t rubygem-${GEM}.spec.template ${TMPDIR}/${GEM_VERSION}.gem > rubygem-${GEM}.spec
+    gem2rpm -t rubygem-${GEM}.spec.template ${TMPDIR}/${GEM_VERSION}.gem > rubygem-${GEM}.spec || exit 1
 fi
-[ -d ${TMPDIR} ] && rm -rf ${TMPDIR}
+[ -d ${TMPDIR} ] && rm -rf ${TMPDIR}  || exit 1
 
 ############ Build
-SPEC=rubygem-r10k.spec
+SPEC=rubygem-${GEM}.spec
 BUILD_DATE=$(date +%Y%m%d%H%M%S)
-spectool -gf --sourcedir ${SPEC}
-mock -r epel-6-x86_64 --buildsrpm --spec=${SPEC} --sources ~/rpmbuild/SOURCES/
+spectool -gf --sourcedir ${SPEC}  || exit 1
+mock -r epel-6-x86_64 --buildsrpm --spec=${SPEC} --sources ~/rpmbuild/SOURCES/  || exit 1
 BUILD_DIR=${TMPDIR}/${SPEC}/${BUILD_DATE}
 mkdir -p ${BUILD_DIR}
-rsync -av /var/lib/mock/epel-6-x86_64/result/ $BUILD_DIR
+rsync -av /var/lib/mock/epel-6-x86_64/result/ $BUILD_DIR 
 for SRPM in ${BUILD_DIR}/*.src.rpm ;
 do
     echo Building ${SRPM}
-    mock -r epel-6-x86_64  rebuild  ${SRPM}
+    mock -r epel-6-x86_64  rebuild  ${SRPM}  || exit 1
 done
 

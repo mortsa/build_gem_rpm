@@ -49,3 +49,8 @@ do
     mock -r epel-6-x86_64  rebuild  ${SRPM}  || exit 1
 done
 
+
+####### test install 
+
+#mock -r epel-6-x86_64  --install /var/lib/mock/epel-6-x86_64/result/*.noarch.rpm
+

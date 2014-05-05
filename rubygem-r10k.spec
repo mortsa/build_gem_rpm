@@ -1,8 +1,8 @@
-# Generated from r10k-1.2.1.gem by gem2rpm -*- rpm-spec -*-
+# Generated from r10k-1.1.4.gem by gem2rpm -*- rpm-spec -*-
 %global gem_name r10k
 
 Name: rubygem-%{gem_name}
-Version: 1.2.1
+Version: 1.1.4
 Release: 1%{?dist}
 Summary: Puppet environment and module deployment
 Group: Development/Languages
@@ -12,21 +12,12 @@ Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 Requires: ruby(abi)
 Requires: ruby(rubygems) 
 Requires: rubygem(colored) >= 1.2
-Requires: rubygem(cri) => 2.5.0
-Requires: rubygem(cri) < 2.6
+Requires: rubygem(cri) => 2.4.0
+Requires: rubygem(cri) < 2.5
 Requires: rubygem(systemu) => 2.5.2
 Requires: rubygem(systemu) < 2.6
 Requires: rubygem(log4r) >= 1.1.10
-Requires: rubygem(multi_json) => 1.8.2
-Requires: rubygem(multi_json) < 1.9
-Requires: rubygem(json_pure) => 1.8.1
-Requires: rubygem(json_pure) < 1.9
-Requires: rubygem(faraday) => 0.8.8
-Requires: rubygem(faraday) < 0.9
-Requires: rubygem(faraday_middleware) => 0.9.0
-Requires: rubygem(faraday_middleware) < 0.10
-Requires: rubygem(faraday_middleware-multi_json) => 0.0.5
-Requires: rubygem(faraday_middleware-multi_json) < 0.1
+Requires: rubygem(json_pure) 
 BuildRequires: ruby(abi)
 BuildRequires: rubygems-devel 
 BuildRequires: ruby 
@@ -94,21 +85,21 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc %{gem_docdir}
 %{gem_instdir}/spec
-%{gem_instdir}/doc
+#%{gem_instdir}/doc
 %{gem_instdir}/CHANGELOG
 %{gem_instdir}/Gemfile
 %{gem_instdir}/LICENSE
 %{gem_instdir}/README.markdown
-%{gem_instdir}/Rakefile
+#%{gem_instdir}/Rakefile
 %{gem_instdir}/r10k.yaml.example
-%{gem_instdir}/r10k.gemspec
+#%{gem_instdir}/r10k.gemspec
 %exclude %{gem_instdir}/.gitignore
-%exclude %{gem_instdir}/.nodeset.yml
+#%exclude %{gem_instdir}/.nodeset.yml
 %exclude %{gem_instdir}/.rspec
 %exclude %{gem_instdir}/.travis.yml
 
 %{gem_spec}
 
 %changelog
-* Mon May 05 2014 Tim Hughes - 1.2.1-1
+* Mon May 05 2014 Tim Hughes - 1.1.4-1
 - Initial package

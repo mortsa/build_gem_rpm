@@ -6,7 +6,8 @@
 # Distributed under terms of the MIT license.
 #
 
-
+YUM_REPO_RPMS=~/public_html/repos/epel-6-x86_64
+YUM_REPO_SRPMS=~/public_html/repos/epel-6-src
 ############# gen spec
 GEM=$1
 [ ! -z $2 ] && VERSION=" -v $2" || VERSION=''
@@ -53,4 +54,12 @@ done
 ####### test install 
 
 #mock -r epel-6-x86_64  --install /var/lib/mock/epel-6-x86_64/result/*.noarch.rpm
+
+# make the repos and add the rpms to them
+mkdir -p $YUM_REPO_RPMS $YUM_REPO_SRPMS
+
+mv /var/lib/mock/epel-6-x86_64/result/*.src.rpm $YUM_REPO_SRPMS/
+mv /var/lib/mock/epel-6-x86_64/result/*.rpm $YUM_REPO_RPMS/
+createrepo $YUM_REPO_RPMS/ 
+createrepo $YUM_REPO_SRPMS/
 

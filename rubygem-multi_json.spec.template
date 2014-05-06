@@ -135,8 +135,6 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 %doc %{geminstdir}/<%= f %>
 %doc %{geminstdir}/spec
 %doc %{geminstdir}/.document
-%doc %{geminstdir}/.gemtest
-%doc %{geminstdir}/.gitignore
 %doc %{geminstdir}/.rspec
 %doc %{geminstdir}/.travis.yml
 %doc %{geminstdir}/.yardopts

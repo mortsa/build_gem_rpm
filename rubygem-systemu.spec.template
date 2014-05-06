@@ -134,6 +134,13 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 <% for f in spec.extra_rdoc_files -%>
 %doc %{geminstdir}/<%= f %>
 <% end -%>
+%doc %{geminstdir}/LICENSE
+%doc %{geminstdir}/README
+%doc %{geminstdir}/README.erb
+%doc %{geminstdir}/Rakefile
+%doc %{geminstdir}/samples
+%doc %{geminstdir}/systemu.gemspec
+%doc %{geminstdir}/test
 <% end # if doc_subpackage -%>
 
 <% if nongem -%>
